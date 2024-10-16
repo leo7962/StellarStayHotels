@@ -1,0 +1,38 @@
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using StellarStayHotels.Server.Context;
+using StellarStayHotels.Server.Dtos;
+using StellarStayHotels.Server.Interfaces;
+
+namespace StellarStayHotels.Server.Services
+{
+    public class RoomService : IRoomService
+    {
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+
+        public RoomService(DataContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(RoomSearchDto searchDto)
+        {
+            var availableRooms = await _context.Rooms.Where(r => r.MaxOccupancy >= searchDto.NumberOfGuests).ToListAsync();
+
+            if (!string.IsNullOrEmpty(searchDto.RoomType))
+            {
+                availableRooms = availableRooms.Where(r => r.Type.Equals(searchDto.RoomType, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            return _mapper.Map<IEnumerable<RoomDto>>(availableRooms);
+        }
+
+        public async Task<RoomDto> GetRoomByIdAsync(int id)
+        {
+            var room = await _context.Rooms.FindAsync(id);
+            return _mapper.Map<RoomDto>(room);
+        }
+    }
+}
