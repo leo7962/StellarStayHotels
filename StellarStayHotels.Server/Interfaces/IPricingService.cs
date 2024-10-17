@@ -1,9 +1,9 @@
-﻿using Core.Models;
+﻿using StellarStayHotels.Server.Dtos;
 
 namespace StellarStayHotels.Server.Interfaces
 {
     public interface IPricingService
     {
-        Task<decimal> CalculatePrice(Room room, DateTime checkIn, DateTime checkOut, int numberOfGuests, bool includeBreakFast);
+        Task<decimal> CalculatePriceAsync(PricingRequestDto pricingRequest);
     }
 }

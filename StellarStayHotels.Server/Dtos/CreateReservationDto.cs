@@ -6,7 +6,7 @@ namespace StellarStayHotels.Server.Dtos
     public class CreateReservationDto
     {
         [Required]
-        public int Id { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -15,7 +15,7 @@ namespace StellarStayHotels.Server.Dtos
         [Required]
         [DataType(DataType.Date)]
         [DateGreaterThan("CheckInDate", ErrorMessage = "Check-out date must be greater than check-in date.")]
-        public DateTime ChekOutDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
 
         [Range(1, 10, ErrorMessage = "The number of guests must be between 1 and 10.")]
         public int NumberOfGuests { get; set; }

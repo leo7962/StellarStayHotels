@@ -1,6 +1,6 @@
-﻿using Core.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using StellarStayHotels.Server.Context;
+using StellarStayHotels.Server.Dtos;
 using StellarStayHotels.Server.Interfaces;
 
 namespace StellarStayHotels.Server.Services
@@ -8,32 +8,31 @@ namespace StellarStayHotels.Server.Services
     public class PricingService : IPricingService
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public PricingService(DataContext context)
+        public PricingService(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<decimal> CalculatePrice(Room room, DateTime checkIn, DateTime checkOut, int numberOfGuests, bool includesBreakfast)
+
+        public async Task<decimal> CalculatePriceAsync(PricingRequestDto pricingRequest)
         {
-            int totalDays = (checkOut - checkIn).Days;
+            var room = await _context.Rooms.FindAsync(pricingRequest.Id);
+            if (room == null) { throw new Exception("Room not found."); }
+
+            int totalDays = (pricingRequest.CheckOutDate - pricingRequest.CheckInDate).Days;
             decimal totalPrice = 0;
 
-            // Obtener cualquier configuración adicional que pueda influir en el precio de la base de datos (simulado).
-            //var pricingAdjustments = await _context.PricingAdjustments
-            //    .Where(p => p.RoomType == room.Type)
-            //    .ToListAsync();
-
-            for (var date = checkIn; date < checkOut; date = date.AddDays(1))
+            for (var date = pricingRequest.CheckInDate; date < pricingRequest.CheckOutDate; date = date.AddDays(1))
             {
                 decimal dailyRate = room.BaseRate;
 
-                // Incremento de precio en fines de semana
                 if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    dailyRate *= 1.25m; // Aumento del 25%
+                    dailyRate *= 1.25m;
                 }
 
-                // Ajustes de tarifa por duración de la estancia
                 if (totalDays >= 4 && totalDays <= 6)
                 {
                     dailyRate -= 4;
@@ -50,14 +49,21 @@ namespace StellarStayHotels.Server.Services
                 totalPrice += dailyRate;
             }
 
-            // Cálculo del costo de desayuno de manera asíncrona si se necesita consultar alguna información.
-            //if (includesBreakfast)
-            //{
-            //    var breakfastCost = await GetBreakfastCostAsync(numberOfGuests, totalDays);
-            //    totalPrice += breakfastCost;
-            //}
+            if (pricingRequest.IncludesBreakfast)
+            {
+                var breakfastCost = GetBreakfastCostAsync(pricingRequest.NumberOfGuests, totalDays);
+                totalPrice += breakfastCost;
+            }
 
             return totalPrice;
+        }
+
+        private decimal GetBreakfastCostAsync(int numberOfGuests, int totalDays)
+        {
+
+            decimal breakfastPricePerDay = 5m;
+
+            return numberOfGuests * totalDays * breakfastPricePerDay;
         }
     }
 }

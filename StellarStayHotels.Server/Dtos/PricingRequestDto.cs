@@ -1,11 +1,11 @@
 ﻿namespace StellarStayHotels.Server.Dtos
 {
-    public class RoomSearchDto
+    public class PricingRequestDto
     {
-        public DateTime ChekInDate { get; set; }
+        public int Id { get; set; }
+        public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public int NumberOfGuests { get; set; }
         public bool IncludesBreakfast { get; set; }
-        public required string RoomType { get; set; }
     }
 }
