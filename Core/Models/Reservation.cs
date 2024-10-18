@@ -1,5 +1,6 @@
 ﻿using Core.Validations;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models
 {
@@ -8,6 +9,7 @@ namespace Core.Models
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey("Room")]
         [Required(ErrorMessage = "The room ID is required.")]
         public int RoomId { get; set; }
 

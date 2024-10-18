@@ -1,9 +1,8 @@
 ﻿using StellarStayHotels.Server.Dtos;
 
-namespace StellarStayHotels.Server.Interfaces
+namespace StellarStayHotels.Server.Interfaces;
+
+public interface IPricingService
 {
-    public interface IPricingService
-    {
-        Task<decimal> CalculatePriceAsync(PricingRequestDto pricingRequest);
-    }
+    Task<decimal> CalculatePriceAsync(PricingRequestDto pricingRequest);
 }

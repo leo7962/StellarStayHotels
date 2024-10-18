@@ -1,0 +1,31 @@
+<form (ngSubmit)="searchRooms()">
+  <div>
+    <label for="checkInDate">Fecha de Entrada:</label>
+    <input type="date" [(ngModel)]="searchParams.checkInDate" name="checkInDate" required>
+  </div>
+  <div>
+    <label for="checkOutDate">Fecha de Salida:</label>
+    <input type="date" [(ngModel)]="searchParams.checkOutDate" name="checkOutDate" required>
+  </div>
+  <div>
+    <label for="numberOfGuests">Número de Huéspedes:</label>
+    <input type="number" [(ngModel)]="searchParams.numberOfGuests" name="numberOfGuests" min="1" required>
+  </div>
+  <button type="submit">Buscar Cuartos</button>
+</form>
+
+<div *ngIf="availableRooms.length > 0">
+  <h3>Cuartos Disponibles:</h3>
+  <div *ngFor="let room of availableRooms" class="room-card">
+    <h4>{{ room.type }}</h4>
+    <p>Máx. Ocupación: {{ room.maxOccupancy }}</p>
+    <p>Número de Camas: {{ room.numberOfBeds }}</p>
+    <p>Vista al Océano: {{ room.hasOceanView ? 'Sí' : 'No' }}</p>
+    <p>Tarifa: ${{ room.baseRate }}</p>
+    <button (click)="selectRoom(room)">Seleccionar</button>
+  </div>
+</div>
+
+<!-- Mostrar el formulario de reserva si se ha seleccionado un cuarto -->
+<app-create-reservation *ngIf="showReservationForm" [selectedRoom]="selectedRoom"></app-create-reservation>
+

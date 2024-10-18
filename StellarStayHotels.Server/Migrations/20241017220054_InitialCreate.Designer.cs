@@ -12,7 +12,7 @@ using StellarStayHotels.Server.Context;
 namespace StellarStayHotels.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241016040341_InitialCreate")]
+    [Migration("20241017220054_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

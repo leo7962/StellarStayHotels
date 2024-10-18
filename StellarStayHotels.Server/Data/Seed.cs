@@ -1,30 +1,26 @@
-﻿using Core.Models;
+﻿using System.Text.Json;
+using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using StellarStayHotels.Server.Context;
-using System.Text.Json;
 
-namespace StellarStayHotels.Server.DataSeed
+namespace StellarStayHotels.Server.DataSeed;
+
+public class Seed
 {
-    public class Seed
+    public static async Task SeedRooms(DataContext context)
     {
-        public static async Task SeedRooms(DataContext context)
-        {
-            if (await context.Rooms.AnyAsync()) return;
+        if (await context.Rooms.AnyAsync()) return;
 
-            var roomData = await File.ReadAllTextAsync("Data\\RoomSeedData.json");
+        var roomData = await File.ReadAllTextAsync("Data\\RoomSeedData.json");
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            var rooms = JsonSerializer.Deserialize<List<Room>>(roomData, options);
+        var rooms = JsonSerializer.Deserialize<List<Room>>(roomData, options);
 
-            if (rooms == null) return;
+        if (rooms == null) return;
 
-            foreach (var room in rooms)
-            {
-                await context.Rooms.AddAsync(room);
-            }
+        foreach (var room in rooms) await context.Rooms.AddAsync(room);
 
-            await context.SaveChangesAsync();
-        }
+        await context.SaveChangesAsync();
     }
 }
