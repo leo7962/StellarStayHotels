@@ -1,16 +1,15 @@
 <div *ngIf="selectedRoom">
   <h3>Crear Reservación para {{ selectedRoom.type }}</h3>
-  <form (ngSubmit)="createReservation()">
+  <form #reservationForm="ngForm" (submit)="createReservation()" autocomplete="off">
     <p>Fecha de Entrada: {{ reservationDetails.checkInDate }}</p>
     <p>Fecha de Salida: {{ reservationDetails.checkOutDate }}</p>
     <p>Huéspedes: {{ reservationDetails.numberOfGuests }}</p>
 
     <label>
-      <input type="checkbox" [(ngModel)]="reservationDetails.includesBreakfast" name="includesBreakfast">
+      <input [(ngModel)]="reservationDetails.includesBreakfast" name="includesBreakfast" type="checkbox">
       Incluir Desayuno
     </label>
 
     <button type="submit">Confirmar Reservación</button>
   </form>
 </div>
-

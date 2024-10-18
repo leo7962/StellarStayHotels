@@ -1,17 +1,26 @@
-<form (ngSubmit)="searchRooms()">
+<form #searchForm="ngForm" (ngSubmit)="searchRooms()" autocomplete="off">
   <div>
     <label for="checkInDate">Fecha de Entrada:</label>
-    <input type="date" [(ngModel)]="searchParams.checkInDate" name="checkInDate" required>
+    <input [(ngModel)]="checkInDate" name="checkInDate" required type="date">
+    <div *ngIf="searchForm.submitted && !checkInDate">
+      <small class="error">La fecha de entrada es obligatoria.</small>
+    </div>
   </div>
   <div>
     <label for="checkOutDate">Fecha de Salida:</label>
-    <input type="date" [(ngModel)]="searchParams.checkOutDate" name="checkOutDate" required>
+    <input [(ngModel)]="checkOutDate" name="checkOutDate" required type="date">
+    <div *ngIf="searchForm.submitted && !checkOutDate">
+      <small class="error">La fecha de salida es obligatoria.</small>
+    </div>
   </div>
   <div>
     <label for="numberOfGuests">Número de Huéspedes:</label>
-    <input type="number" [(ngModel)]="searchParams.numberOfGuests" name="numberOfGuests" min="1" required>
+    <input [(ngModel)]="numberOfGuests" min="1" name="numberOfGuests" required type="number">
+    <div *ngIf="searchForm.submitted && !numberOfGuests">
+      <small class="error">El número de huéspedes debe ser al menos 1.</small>
+    </div>
   </div>
-  <button type="submit">Buscar Cuartos</button>
+  <button [disabled]="searchForm.invalid" type="submit">Buscar Cuartos</button>
 </form>
 
 <div *ngIf="availableRooms.length > 0">
@@ -25,7 +34,3 @@
     <button (click)="selectRoom(room)">Seleccionar</button>
   </div>
 </div>
-
-<!-- Mostrar el formulario de reserva si se ha seleccionado un cuarto -->
-<app-create-reservation *ngIf="showReservationForm" [selectedRoom]="selectedRoom"></app-create-reservation>
-

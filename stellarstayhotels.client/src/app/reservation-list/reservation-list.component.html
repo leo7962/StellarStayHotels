@@ -1,0 +1,36 @@
+<div *ngIf="errorMessage" class="error">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<div *ngIf="reservations.length > 0">
+  <h3>Lista de Reservas</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo de Habitación</th>
+      <th>Fecha de Entrada</th>
+      <th>Fecha de Salida</th>
+      <th>Huéspedes</th>
+      <th>Incluye Desayuno</th>
+      <th>Precio Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let reservation of reservations">
+      <td>{{ reservation.id }}</td>
+      <td>{{ reservation.room?.type }}</td>
+      <td>{{ reservation.checkInDate | date }}</td>
+      <td>{{ reservation.checkOutDate | date }}</td>
+      <td>{{ reservation.numberOfGuests }}</td>
+      <td>{{ reservation.includesBreakfast ? 'Sí' : 'No' }}</td>
+      <td>{{ reservation.totalPrice | currency }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="reservations.length === 0 && !errorMessage">
+  <p>No hay reservas disponibles.</p>
+</div>
+

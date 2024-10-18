@@ -8,6 +8,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\stellarstayhotels.client\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\_services\" />
+    <Folder Include="src\app\_services\"/>
   </ItemGroup>
 </Project>

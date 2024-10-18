@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreateReservationComponent } from './create-reservation.component';
+import {CreateReservationComponent} from './create-reservation.component';
 
 describe('CreateReservationComponent', () => {
   let component: CreateReservationComponent;
@@ -10,7 +10,7 @@ describe('CreateReservationComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CreateReservationComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreateReservationComponent);
     component = fixture.componentInstance;
